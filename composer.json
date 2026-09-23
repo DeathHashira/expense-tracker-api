@@ -1,0 +1,24 @@
+{
+    "name": "hashira/beginner-expense-tracker-api",
+    "require": {
+        "firebase/php-jwt": "^7.2",
+        "doctrine/migrations": "^3.9",
+        "vlucas/phpdotenv": "^5.7"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/",
+            "App\\": "app/",
+            "Controllers\\": "controllers/",
+            "Model\\": "model/"
+        }
+    },
+    "authors": [
+        {
+            "name": "DeathHashira",
+            "email": "shabanid.zahra@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
