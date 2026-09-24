@@ -4,6 +4,8 @@ namespace Controllers;
 
 use App\Http\Request;
 use App\Http\Response;
+use Firebase\JWT\JWT;
+use Middlewares\AuthMiddleware;
 use Model\Users;
 
 class AuthenticationController
@@ -27,7 +29,7 @@ class AuthenticationController
         }
     }
 
-    public function checkLogin(): Response
+    public function checkLogin(string $key): Response
     {
         $params = $this->request->post();
         $userData = $this->usersModel->read(
@@ -39,11 +41,29 @@ class AuthenticationController
             ->setStatusCode(401);
         } else {
             if (password_verify($params['password'], $userData['password'])) {
-                return (new Response);
+                $token = $this->createToken($userData['id'], $key);
+
+                return (new Response)
+                ->setHeader("Content-type: application/json")
+                ->setContent([
+                    "access_token" => $token
+                ]);
             } else {
                 return (new Response)
                 ->setStatusCode(401);
             }
         }
+    }
+
+    private function createToken(int $userId, string $key): string
+    {
+        $payload = [
+            "iss" => "hashira-expense-tracker",
+            "sub" => $userId,
+            "iat" => time(),
+            "exp" => time() + 3600
+        ];
+
+        return JWT::encode($payload, $key, "HS256");
     }
 }

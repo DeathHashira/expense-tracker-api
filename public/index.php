@@ -4,6 +4,7 @@ use Dotenv\Dotenv;
 use App\Http\Request;
 use Controllers\AuthenticationController;
 use Controllers\ExpenseController;
+use Middlewares\AuthMiddleware;
 use Model\Database;
 use Model\Expenses;
 use Model\Users;
@@ -28,6 +29,7 @@ $authController = new AuthenticationController(
 
 $expenController = new ExpenseController(
     new Expenses($conn),
+    new AuthMiddleware($request, $_ENV["JWT_SECRET"]),
     $request
 );
 
@@ -37,7 +39,7 @@ Router::post("/signup", function() use ($authController) {
 });
 
 Router::post("/login", function() use ($authController) {
-    $response = $authController->checkLogin();
+    $response = $authController->checkLogin($_ENV["JWT_SECRET"]);
     $response->send();
 });
 

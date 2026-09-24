@@ -11,7 +11,8 @@
             "Src\\": "src/",
             "App\\": "app/",
             "Controllers\\": "controllers/",
-            "Model\\": "model/"
+            "Model\\": "model/",
+            "Middlewares\\": "middlewares/"
         }
     },
     "authors": [

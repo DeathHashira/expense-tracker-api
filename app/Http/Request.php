@@ -6,6 +6,7 @@ class Request
 {
     private string $method;
     private string $uri;
+    private array $context = [];
 
     public function __construct(
         private array $getParams,
@@ -24,6 +25,22 @@ class Request
             $_POST,
             $_SERVER
         );
+    }
+
+    public function getContext(string $key, mixed $default=null): mixed
+    {
+        return $this->context[$key] ?? $default;
+    }
+
+    public function getAuthHeader(): string
+    {
+        return getallheaders()["Authorization"];
+    }
+
+    public function setContext(string $key, mixed $value): self
+    {
+        $this->context[$key] = $value;
+        return $this;
     }
 
     public function getMethod(): string

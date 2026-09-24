@@ -12,6 +12,7 @@ class Response
     {
         $this->statusCode = 200;
         $this->headers = [];
+        $this->content = null;
     }
 
     public function setHeader(string $newHeader): self
