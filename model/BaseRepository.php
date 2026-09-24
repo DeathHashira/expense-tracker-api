@@ -18,7 +18,7 @@ class BaseRepository
     public function create(array $data): bool
     {
         $columns = implode(", ", array_keys($data));
-        $values = implode(", ", array_map(function ($key) {":".$key;}, array_keys($data)));
+        $values = implode(", ", array_map(function ($key) {return ":".$key;}, array_keys($data)));
 
         $statement = $this->conn->prepare("INSERT INTO {$this->tableName} ($columns) VALUES ($values)");
         $this->bindValues($statement, $data);
@@ -49,10 +49,11 @@ class BaseRepository
     public function updateById(int $id, array $changes): bool
     {
         $set = $this->formatSet($changes);
-        $statement = $this->conn->prepare("UPDATE {$this->tableName} SET $set WHERE id=?");
+        $statement = $this->conn->prepare("UPDATE {$this->tableName} SET $set WHERE id=:id");
+        $statement->bindValue(":id", $id);
         $this->bindValues($statement, $changes);
         
-        return $statement->execute([$id]);
+        return $statement->execute();
     }
 
     public function bindValues(PDOStatement $statement, array $data): void
@@ -64,6 +65,6 @@ class BaseRepository
 
     private function formatSet(array $data): string
     {
-        return implode(", ", array_map(function($key) {"$key=:$key";}, array_keys($data)));
+        return implode(", ", array_map(function($key) {return "$key=:$key";}, array_keys($data)));
     }
 }

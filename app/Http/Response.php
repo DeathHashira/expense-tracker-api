@@ -11,6 +11,7 @@ class Response
     public function __construct()
     {
         $this->statusCode = 200;
+        $this->headers = [];
     }
 
     public function setHeader(string $newHeader): self
@@ -53,5 +54,7 @@ class Response
         foreach ($this->getHeaders() as $header) {
             header($header);
         }
+
+        echo json_encode($this->getContent());
     }
 }

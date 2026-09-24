@@ -17,7 +17,7 @@ class AuthenticationController
     {
         $params = $this->request->post();
 
-        $this->hashPass($params);
+        $params['password'] = password_hash($params["password"], PASSWORD_DEFAULT);
         
         if ($this->usersModel->create($params)) {
             return (new Response);
@@ -27,33 +27,23 @@ class AuthenticationController
         }
     }
 
-    private function hashPass(array $data): void
-    {
-        $data['password'] = password_hash($data["password"], PASSWORD_DEFAULT);
-    }
-
     public function checkLogin(): Response
     {
         $params = $this->request->post();
         $userData = $this->usersModel->read(
             ["email" => $params["email"]]
-        );
+        )[0];
 
         if (empty($userData)) {
             return (new Response)
             ->setStatusCode(401);
         } else {
-            if ($this->checkPass($params['password'], $userData['password'])) {
+            if (password_verify($params['password'], $userData['password'])) {
                 return (new Response);
             } else {
                 return (new Response)
                 ->setStatusCode(401);
             }
         }
-    }
-
-    private function checkPass(string $pass, string $hashedPass): bool
-    {
-        return password_verify($pass, $hashedPass);
     }
 }

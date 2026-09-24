@@ -61,6 +61,7 @@ class ExpenseController
         $expenses = $this->expensesModel->read($params);
         if (!empty($expenses)) {
             return (new Response)
+            ->setHeader("Content-type: application/json")
             ->setContent($expenses);
         } else {
             return (new Response)
