@@ -73,11 +73,9 @@ curl -X localhost:8000/login \
 
 <details>
 <summary>200 Response Example</summary>
-```
 {
     "access_token": "USER_JWT_TOKEN"
 }
-```
 </details>
 <details>
 <summary>401 Response Example</summary>
@@ -98,14 +96,12 @@ curl -X localhost:8000/expenses \
 
 <details>
 <summary>200 Response Example</summary>
-```json
 {
     "id": 1,
     "title": "dinner",
     "amount": 10.2,
     "category": "food"
 }
-```
 </details>
 <details>
 <summary>401 Response Example</summary>
@@ -223,3 +219,9 @@ When the token is expired (or invalid) or authorization header is empty.
 <summary>400 Response Example</summary>
 No content
 </details>
+
+## Usage
+This project is only customized for practical usage and training projects.
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
